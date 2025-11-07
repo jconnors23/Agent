@@ -1,3 +1,5 @@
+# Source: https://developer.nvidia.com/blog/create-your-own-bash-computer-use-agent-with-nvidia-nemotron-in-one-hour/?ncid=em-anno-413794&nvweb_e=Hw-R0m_im6PTzH5G0-4tJPB0fttjJ4aiQhsibmT0yZU6kHSiHzVl6Lltzh02mM2D7rdtcMvmcfexPG-paDUo4w&mkt_tok=MTU2LU9GTi03NDIAAAGdsJopnEKeBS34KH-Xnph1_Kz7WbBpLM5Za_zj6A491jnwIp6giuqVyF_1qYpmmloSKn6saLYtrud13TBM9dJDbgsmHQP8WuPNK_ZG_fJ6TYoJstPfeyIv
+
 # Bash Computer Use Agent with Nemotron
 
 This code contains the implementation of a simple Bash shell agent that can operate the computer. This agent
