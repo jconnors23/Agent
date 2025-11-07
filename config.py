@@ -1,6 +1,13 @@
 import os
 from dataclasses import dataclass, field
 
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # python-dotenv not installed, skip
+
 @dataclass
 class Config:
     """
@@ -11,9 +18,13 @@ class Config:
     # LLM configuration
     #--------------------------------------
 
+    # NVIDIA NIM API (hosted service - no local GPU needed)
+    # Nemotron-Nano-9B-v2 supports function calling (tool use)
+    # Get your API key at: https://build.nvidia.com/ (NVIDIA API Catalog)
+    # API key should be set in .env file as NVIDIA_API_KEY=your-key-here
     llm_base_url: str = "https://integrate.api.nvidia.com/v1"
     llm_model_name: str = "nvidia/nvidia-nemotron-nano-9b-v2"
-    llm_api_key: str = "(replace with your key, not needed for local models)"
+    llm_api_key: str = os.getenv("NVIDIA_API_KEY", "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")
     # Sampling parameters (we've reduced the temperature to make the model more deterministic)
     llm_temperature: float = 0.1
     llm_top_p: float = 0.95

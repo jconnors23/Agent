@@ -1,28 +1,13 @@
 from typing import Dict
-from langgraph.prebuilt import create_react_agent
+try:
+    from langchain.agents import create_agent  # New import (LangGraph V1.0+)
+except ImportError:
+    from langgraph.prebuilt import create_react_agent as create_agent  # Fallback for older versions
 from langgraph.checkpoint.memory import InMemorySaver
 from langchain_openai import ChatOpenAI
 
 from config import Config
 from bash import Bash
-
-class ExecOnConfirm:
-    """
-    A wrapper around the Bash tool that asks for user confirmation before executing any command.
-    """
-
-    def __init__(self, bash: Bash):
-        self.bash = bash
-
-    def _confirm_execution(self, cmd: str) -> bool:
-        """Ask the user whether the suggested command should be executed."""
-        return input(f"    ▶️   Execute '{cmd}'? [y/N]: ").strip().lower() == "y"
-
-    def exec_bash_command(self, cmd: str) -> Dict[str, str]:
-        """Execute a bash command after confirming with the user."""
-        if self._confirm_execution(cmd):
-            return self.bash.exec_bash_command(cmd)
-        return {"error": "The user declined the execution of this command."}
 
 def main(config: Config):
     # Create the client
@@ -35,10 +20,17 @@ def main(config: Config):
     )
     # Create the tool
     bash = Bash(config)
+    
+    # Wrapper to log command execution (allowlist validation happens in bash.exec_bash_command)
+    def exec_bash_command_with_logging(cmd: str) -> Dict[str, str]:
+        """Execute a bash command with logging (no user confirmation)."""
+        print(f"    ▶️   Executing: {cmd}")
+        return bash.exec_bash_command(cmd)
+    
     # Create the agent
-    agent = create_react_agent(
+    agent = create_agent(
         model=llm,
-        tools=[ExecOnConfirm(bash).exec_bash_command],
+        tools=[exec_bash_command_with_logging],
         prompt=config.system_prompt,
         checkpointer=InMemorySaver(),
     )
@@ -64,6 +56,11 @@ def main(config: Config):
             config={"configurable": {"thread_id": "cli"}},  # one ongoing conversation
         )
         # Show the response (without the thinking part, if any)
+        if not result.get("messages") or not result["messages"][-1].content:
+            print("[ERROR] No response from agent")
+            print("-" * 80 + "\n")
+            continue
+        
         response = result["messages"][-1].content.strip()
 
         if "</think>" in response:

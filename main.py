@@ -4,10 +4,6 @@ from config import Config
 from bash import Bash
 from helpers import Messages, LLM
 
-def confirm_execution(cmd: str) -> bool:
-    """Ask the user whether the suggested command should be executed."""
-    return input(f"    ▶️   Execute '{cmd}'? [y/N]: ").strip().lower() == "y"
-
 def main(config: Config):
     bash = Bash(config)
     # The model
@@ -52,14 +48,12 @@ def main(config: Config):
 
                     # Ensure it's calling the right tool
                     if function_name != "exec_bash_command" or "cmd" not in function_args:
-                        tool_call_result = json.dumps({"error": "Incorrect tool or function argument"})
+                        tool_call_result = {"error": "Incorrect tool or function argument"}
                     else:
                         command = function_args["cmd"]
-                        # Confirm execution with the user
-                        if confirm_execution(command):
-                            tool_call_result = bash.exec_bash_command(command)
-                        else:
-                            tool_call_result = {"error": "The user declined the execution of this command."}
+                        # Execute command directly (allowlist validation happens in bash.exec_bash_command)
+                        print(f"    ▶️   Executing: {command}")
+                        tool_call_result = bash.exec_bash_command(command)
 
                     messages.add_tool_message(tool_call_result, tc.id)
             else:
