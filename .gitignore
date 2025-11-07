@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.env
+secrets.json
+credentials.json
+config.local.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Pipenv (optional - some prefer to commit Pipfile.lock)
+# Pipfile.lock
+
+

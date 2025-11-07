@@ -1,0 +1,64 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+# Web framework
+flask = "*"
+requests = "*"
+
+# Data processing
+pandas = "*"
+numpy = "*"
+
+# Environment variables
+python-dotenv = "*"
+
+# Async support
+aiohttp = "*"
+
+# Database
+sqlalchemy = "*"
+psycopg2-binary = "*"
+
+# API development
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+
+# HTTP client
+httpx = "*"
+
+# AI/LLM
+openai = "*"
+langchain-openai = "*"
+langgraph = "*"
+
+[dev-packages]
+# Testing
+pytest = "*"
+pytest-cov = "*"
+pytest-asyncio = "*"
+
+# Code quality
+black = "*"
+flake8 = "*"
+mypy = "*"
+pylint = "*"
+
+# Type checking
+types-requests = "*"
+
+# Development tools
+ipython = "*"
+jupyter = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+test = "pytest"
+lint = "flake8 ."
+format = "black ."
+type-check = "mypy ."
+
