@@ -42,7 +42,7 @@ class Config:
     #          By running this code you assume all responsibility for
     #          unintended consequences of command execution.
     allowed_commands: list = field(default_factory=lambda: [
-        "cd", "cp", "ls", "cat", "find", "touch", "echo", "grep", "pwd", "mkdir", "wget", "sort", "head", "tail", "du",
+        "cd", "cp", "ls", "cat", "find", "touch", "echo", "grep", "pwd", "mkdir", "wget", "sort", "head", "tail", "du", "wc",
     ])
 
     @property

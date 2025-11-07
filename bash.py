@@ -65,10 +65,22 @@ class Bash:
         commands = []
 
         for part in parts:
-            tokens = shlex.split(part.strip())
-
-            if tokens:
-                commands.append(tokens[0])
+            part = part.strip()
+            if not part:
+                continue
+            
+            # Try to use shlex.split() for proper shell parsing
+            try:
+                tokens = shlex.split(part)
+                if tokens:
+                    commands.append(tokens[0])
+            except ValueError:
+                # Fallback: if shlex.split() fails (e.g., with find -exec {} \;),
+                # extract the first word as the command name
+                # Split on whitespace and take the first non-empty token
+                tokens = part.split()
+                if tokens:
+                    commands.append(tokens[0])
 
         return commands
 
